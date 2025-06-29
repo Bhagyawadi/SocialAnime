@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+  <h4>Notifications</h4>
+  <ul class="list-group">
+    {% for n in notifications %}
+      <li class="list-group-item">
+        {% if n.notif_type == "follow" %}
+          <a href="{% url 'profile' username=n.from_user.username %}">
+            @{{ n.from_user.username }}
+          </a> started following you.
+        {% elif n.notif_type == "like" %}
+          <a href="{% url 'profile' username=n.from_user.username %}">
+            @{{ n.from_user.username }}
+          </a> liked your 
+          <a href="{% url 'feed' %}}#post-{{ n.post.id }}">post</a>.
+        {% elif n.notif_type == "comment" %}
+          <a href="{% url 'profile' username=n.from_user.username %}">
+            @{{ n.from_user.username }}
+          </a> commented on your 
+          <a href="{% url 'feed' %}}#post-{{ n.post.id }}">post</a>.
+        {% endif %}
+        <small class="text-muted float-end">{{ n.created_at|timesince }} ago</small>
+      </li>
+    {% empty %}
+      <li class="list-group-item text-muted">No new notifications.</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

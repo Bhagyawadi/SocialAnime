@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+  <h4>Your Conversations</h4>
+  <ul class="list-group">
+    {% for c in convos %}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <span>
+          {% for p in c.participants.all %}
+            {% if p != user %}
+              @{{ p.username }}
+            {% endif %}
+          {% endfor %}
+        </span>
+        <a href="{% url 'conv_detail' c.id %}" class="btn btn-sm btn-primary">Open</a>
+      </li>
+    {% empty %}
+      <li class="list-group-item text-muted">No conversations yet.</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

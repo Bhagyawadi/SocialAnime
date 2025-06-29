@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+  <h4>Conversation</h4>
+  <div class="mb-3" style="max-height: 400px; overflow-y: auto; padding: 1rem; background: #f8f9fa; border-radius: 0.25rem;">
+    {% for msg in conversation.messages.all %}
+      <div class="mb-2 {% if msg.sender == user %}text-end{% endif %}">
+        <small class="d-block text-muted">
+          <strong>@{{ msg.sender.username }}</strong>
+          {{ msg.timestamp|date:"M d, Y H:i" }}
+        </small>
+        <p class="d-inline-block p-2 bg-white border rounded">
+          {{ msg.text }}
+        </p>
+      </div>
+    {% endfor %}
+  </div>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.text }}
+    <button type="submit" class="btn btn-primary btn-sm mt-2">Send</button>
+  </form>
+</div>
+{% endblock %}

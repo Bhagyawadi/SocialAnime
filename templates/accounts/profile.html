@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4 text-center">
+  <img src="{{ user_profile.avatar.url }}" class="rounded-circle mb-3" height="100" width="100" alt="Avatar">
+  <h3>{{ user_profile.username }}</h3>
+  {% if user_profile.bio %}<p class="text-muted">{{ user_profile.bio }}</p>{% endif %}
+  <p>
+    {% if user_profile.github %}
+      <a href="{{ user_profile.github }}" class="me-2" target="_blank">GitHub</a>
+    {% endif %}
+    {% if user_profile.linkedin %}
+      <a href="{{ user_profile.linkedin }}" target="_blank">LinkedIn</a>
+    {% endif %}
+  </p>
+
+  {% if request.user != user_profile %}
+    <form action="{% url 'toggle_follow' user_profile.username %}" method="post" class="d-inline-block mb-3">
+      {% csrf_token %}
+      {% if is_following %}
+        <button class="btn btn-outline-danger">Unfollow</button>
+      {% else %}
+        <button class="btn btn-primary">Follow</button>
+      {% endif %}
+    </form>
+    <a href="{% url 'conv_with' other_username=user_profile.username %}"
+       class="btn btn-sm btn-outline-success mb-3 ms-2">Message</a>
+  {% endif %}
+
+  <p class="mb-3">
+    <strong>{{ followers_count }}</strong> Followers |
+    <strong>{{ following_count }}</strong> Following
+  </p>
+
+  {% if request.user == user_profile %}
+    <a href="{% url 'edit_profile' user_profile.username %}" class="btn btn-outline-secondary">Edit Profile</a>
+  {% endif %}
+</div>
+{% endblock %}

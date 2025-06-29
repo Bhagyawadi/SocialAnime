@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5" style="max-width: 600px;">
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h3 class="card-title mb-4">Edit Post</h3>
+
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="mb-3">
+          {{ form.caption.label_tag }}
+          {{ form.caption }}
+          {% if form.caption.errors %}
+            <div class="text-danger small">{{ form.caption.errors }}</div>
+          {% endif %}
+        </div>
+
+        <div class="mb-3">
+          {{ form.image.label_tag }}
+          {{ form.image }}
+          {% if form.image.errors %}
+            <div class="text-danger small">{{ form.image.errors }}</div>
+          {% endif %}
+        </div>
+
+        <div class="d-flex justify-content-between">
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+          <a href="{% url 'feed' %}" class="btn btn-outline-secondary">Cancel</a>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+{% endblock %}
